@@ -1,0 +1,52 @@
+{
+  "name": "screen",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "vite build",
+    "prepare": "husky install",
+    "dev": "vite --open --host",
+    "deploy": "deployed-cli --mode dev",
+    "lint": "eslint --ext .js,.vue,.jsx packages --fix",
+    "serve": "vite build --mode preview && vite preview --host"
+  },
+  "lint-staged": {
+    "packages/**/*.{js,vue,jsx}": [
+      "eslint --fix"
+    ]
+  },
+  "devDependencies": {
+    "@deployed/cli": "^0.4.3",
+    "@types/three": "^0.141.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^5.2.0",
+    "eslint-plugin-vue": "^8.2.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.2",
+    "prettier": "^2.5.1",
+    "rimraf": "^3.0.2",
+    "sass": "^1.53.0",
+    "stylus": "^0.58.1",
+    "vite": "^2.6.4",
+    "vite-plugin-vue2": "^1.9.3",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "dependencies": {
+    "@hyhello/utils": "^1.5.0",
+    "axios": "^0.24.0",
+    "dat.gui": "^0.7.9",
+    "echarts": "^4.1.0",
+    "echarts-gl": "^1.1.2",
+    "normalize.css": "^8.0.1",
+    "resize-observer-polyfill": "^1.5.1",
+    "three": "^0.141.0",
+    "vue": "^2.6.14",
+    "vue-router": "^3.5.3",
+    "xlsx": "^0.18.5"
+  }
+}

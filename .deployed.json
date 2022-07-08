@@ -1,0 +1,16 @@
+{
+  "projectName": "screen",
+  "script": "npm run build",
+  "modeList": [
+    {
+      "mode": "dev",
+      "name": "开发环境",
+      "host": "47.107.100.129",
+      "port": 22,
+      "username": "root",
+      "localPath": "./dist",
+      "remotePath": "/usr/share/nginx/html"
+    }
+  ],
+  "$schema": "https://json.schemastore.org/deployed"
+}

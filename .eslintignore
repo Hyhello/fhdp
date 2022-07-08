@@ -1,0 +1,10 @@
+dist/
+screen/
+node_modules/
+scripts/
+/*.html
+/docs/
+lib/
+/coverage/
+.env.*
+.*

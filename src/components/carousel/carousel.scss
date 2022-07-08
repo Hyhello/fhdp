@@ -1,0 +1,20 @@
+.carousel_wrap-main {
+	position: relative;
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+	.carousel_ul-main {
+    margin: 0;
+    padding: 0;
+		position: absolute;
+		width: 100%;
+		height: auto;
+		left: 0;
+		top: 0;
+		.carousel_li-main {
+			width: 100%;
+			height: auto;
+			list-style: none;
+		}
+	}
+}
