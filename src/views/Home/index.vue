@@ -24,14 +24,14 @@
 <template>
   <div class="hy-home">
     <!-- 全部产线 -->
-    <!-- <Total></Total> -->
+    <Total></Total>
     <!-- 中间部分 -->
     <Three></Three>
     <div class="hy-home__right">
       <!-- 设备维保信息 -->
-      <!-- <Device class="mb30"></Device> -->
+      <Device class="mb30"></Device>
       <!-- 备品备件信息 -->
-      <!-- <Spares></Spares> -->
+      <Spares></Spares>
     </div>
   </div>
 </template>

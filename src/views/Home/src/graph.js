@@ -1,194 +1,272 @@
 /**
  * 作者：hyhello
- * 时间：2022-07-07
- * 描述：绘制
+ * 时间：2022-07-09
+ * 描述：three.js
  */
-
 import * as THREE from 'three';
-let renderer, camera, scene, gui, light, stats, controls, meshHelper, mixer, action;
-const clock = new THREE.Clock();
+// import * as dat from 'dat.gui';
+import { rangeArr, on, off } from '@hyhello/utils';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
+// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
-function initRender() {
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor(0xeeeeee);
-  renderer.shadowMap.enabled = true;
-  // 告诉渲染器需要阴影效果
-  document.body.appendChild(renderer.domElement);
-}
+const pos = {
+  x: 0,
+  y: 0,
+  z: 0
+};
 
-function initCamera() {
-  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
-  camera.position.set(100, 200, 300);
-}
+// 加载模型
+const oLoader = new OBJLoader();
+const mLoader = new MTLLoader();
 
-function initScene() {
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xa0a0a0);
-  scene.fog = new THREE.Fog(0xa0a0a0, 200, 1000);
-}
-
-// 初始化dat.GUI简化试验流程
-function initGui() {
-  // 声明一个保存需求修改的相关数据的对象
-  gui = {
-    animation: true,
-    helper: true // 模型辅助线
-  };
-  const datGui = new dat.GUI();
-  // 将设置属性添加到gui当中，gui.add(对象，属性，最小值，最大值）
-  datGui.add(gui, 'animation').onChange(function (e) {
-    if (e) {
-      action.play();
-    } else {
-      action.stop();
-    }
-  });
-
-  datGui.add(gui, 'helper').onChange(function (e) {
-    meshHelper.visible = e;
-  });
-}
-
-function initLight() {
-  scene.add(new THREE.AmbientLight(0x444444));
-
-  light = new THREE.DirectionalLight(0xffffff);
-  light.position.set(0, 200, 100);
-
-  light.castShadow = true;
-  light.shadow.camera.top = 180;
-  light.shadow.camera.bottom = -100;
-  light.shadow.camera.left = -120;
-  light.shadow.camera.right = 120;
-
-  // 告诉平行光需要开启阴影投射
-  light.castShadow = true;
-
-  scene.add(light);
-}
-
-function initModel() {
-  // 辅助工具
-  const helper = new THREE.AxesHelper(50);
-  scene.add(helper);
-
-  // 地板
-  const mesh = new THREE.Mesh(
-    new THREE.PlaneBufferGeometry(2000, 2000),
-    new THREE.MeshPhongMaterial({ color: 0xffffff, depthWrite: false })
-  );
-  mesh.rotation.x = -Math.PI / 2;
-  mesh.receiveShadow = true;
-  scene.add(mesh);
-
-  // 添加地板割线
-  const grid = new THREE.GridHelper(2000, 20, 0x000000, 0x000000);
-  grid.material.opacity = 0.2;
-  grid.material.transparent = true;
-  scene.add(grid);
-
-  // 加载模型
-  const loader = new THREE.FBXLoader();
-  loader.load('/lib/models/fbx/Samba Dancing.fbx', function (mesh) {
-    console.log(mesh);
-
-    // 添加骨骼辅助
-    meshHelper = new THREE.SkeletonHelper(mesh);
-    scene.add(meshHelper);
-
-    // 设置模型的每个部位都可以投影
-    mesh.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
+/**
+ * 创建网格，即二维数组
+ * @param {*} m
+ * @param {*} n
+ * @param {*} cb
+ */
+const rangeGrid = (m, n, cb) => {
+  rangeArr(m).forEach((item, i) => {
+    rangeArr(n).forEach((_, index) => {
+      cb(i, index);
     });
-
-    // AnimationMixer是场景中特定对象的动画播放器。当场景中的多个对象独立动画时，可以为每个对象使用一个AnimationMixer
-    mixer = mesh.mixer = new THREE.AnimationMixer(mesh);
-
-    // mixer.clipAction 返回一个可以控制动画的AnimationAction对象  参数需要一个AnimationClip 对象
-    // AnimationAction.setDuration 设置一个循环所需要的时间，当前设置了一秒
-    // 告诉AnimationAction启动该动作
-    action = mixer.clipAction(mesh.animations[0]);
-    action.play();
-
-    scene.add(mesh);
   });
-}
+};
 
-// 初始化性能插件
-function initStats() {
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
-}
+// 模型加载 (obj, mtl)
+const load = (path, cb) => {
+  mLoader.load(path + '.mtl', (materials) => {
+    materials.preload();
+    oLoader.setMaterials(materials).load(path + '.obj', cb);
+  });
+};
 
-function initControls() {
-  controls = new THREE.OrbitControls(camera, renderer.domElement);
-  // 设置控制器的中心点
-  controls.target.set(0, 100, 0);
-  // 如果使用animate方法时，将此函数删除
-  // controls.addEventListener( 'change', render );
-  // 使动画循环使用时阻尼或自转 意思是否有惯性
-  controls.enableDamping = true;
-  // 动态阻尼系数 就是鼠标拖拽旋转灵敏度
-  // controls.dampingFactor = 0.25;
-  // 是否可以缩放
-  controls.enableZoom = true;
-  // 是否自动旋转
-  controls.autoRotate = false;
-  controls.autoRotateSpeed = 0.5;
-  // 设置相机距离原点的最远距离
-  controls.minDistance = 1;
-  // 设置相机距离原点的最远距离
-  controls.maxDistance = 2000;
-  // 是否开启右键拖拽
-  controls.enablePan = true;
-}
+export default class Graph {
+  constructor(el, options) {
+    this.$el = el;
 
-function render() {
-  const time = clock.getDelta();
-  if (mixer) {
-    mixer.update(time);
+    this.$dpr = window.devicePixelRatio || 1;
+
+    // 渲染器动画
+    this.timer = null;
+
+    this.emitClick = options.handleClick;
+
+    // 场景、相机、渲染器
+    this.scene = null;
+    this.camera = null;
+    this.renderer = null;
+
+    this.init();
+
+    // 绑定事件
+    on(window, 'resize', this);
+    on(this.renderer.domElement, 'click', this);
   }
 
-  controls.update();
-}
+  init() {
+    const { scrollWidth, scrollHeight } = this.$el;
+    // 初始化场景
+    this.scene = new THREE.Scene();
 
-// 窗口变动触发的函数
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
+    // 初始化相机
+    this.camera = new THREE.PerspectiveCamera(45, scrollWidth / scrollHeight, 1, 2000);
+    this.camera.position.set(-300, 550, 600);
+    this.camera.up.x = 0;
+    this.camera.up.y = 1;
+    this.camera.up.z = 0;
+    this.camera.lookAt(this.scene.position);
 
-function animate() {
-  // 更新控制器
-  render();
+    // 初始化渲染器
+    const renderer = (this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }));
+    renderer.setPixelRatio(this.$dpr);
+    renderer.setSize(scrollWidth * this.$dpr, scrollHeight * this.$dpr);
+    renderer.shadowMap.enabled = true; // 是否启用阴影
+    // 告诉渲染器需要阴影效果
+    this.$el.appendChild(renderer.domElement);
 
-  // 更新性能插件
-  stats.update();
+    // 初始化灯光
+    this.scene.add(new THREE.AmbientLight(0x000f46));
+    const light = new THREE.DirectionalLight(0xffffff);
+    light.position.set(0, 200, 100);
+    light.castShadow = true;
+    light.shadow.camera.top = 180;
+    light.shadow.camera.bottom = -100;
+    light.shadow.camera.left = -120;
+    light.shadow.camera.right = 120;
+    // 告诉平行光需要开启阴影投射;
+    light.castShadow = true;
+    this.scene.add(light);
 
-  renderer.render(scene, camera);
+    // 辅助工具
+    // const helper = new THREE.AxesHelper(1000);
+    // helper.position.set(0, 0, 0);
+    // this.scene.add(helper);
 
-  requestAnimationFrame(animate);
-}
+    // 添加地板割线
+    const grid = new THREE.GridHelper(10000, 300, 0x2460a5, 0x2460a5);
+    grid.material.opacity = 0.2;
+    grid.material.transparent = true;
+    this.scene.add(grid);
 
-function draw() {
-  // 兼容性判断
-  if (!Detector.webgl) Detector.addGetWebGLMessage();
+    // 模型组
+    const group = new THREE.Group();
 
-  initGui();
-  initRender();
-  initScene();
-  initCamera();
-  initLight();
-  initModel();
-  initControls();
-  initStats();
+    THREE.DefaultLoadingManager.onLoad = () => {
+      rangeGrid(2, 1, (hIndex) => {
+        const groupClone = group.clone();
+        groupClone.position.set(-1100 * hIndex, 0, 80);
+        this.scene.add(groupClone);
+      });
 
-  animate();
-  window.onresize = onWindowResize;
+      this.renderer.render(this.scene, this.camera);
+    };
+
+    // 加载模型
+    load('/public/mesh/切片机', (model) => {
+      model.scale.set(0.4, 0.4, 0.4);
+      model.rotateY(Math.PI * -0.5);
+      model.name = '切片机';
+      const modelGroup = new THREE.Group();
+      modelGroup.position.set(-270, 0, 0);
+      rangeGrid(2, 5, (hIndex, vIndex) => {
+        const modelClone = model.clone();
+        modelClone.position.set(-122 * hIndex, 0, -160 * vIndex);
+        modelGroup.add(modelClone);
+      });
+      group.add(modelGroup);
+    });
+
+    load('/public/mesh/贴片机', (model) => {
+      model.scale.set(0.4, 0.4, 0.4);
+      model.rotateY(Math.PI * -0.5);
+      model.name = '贴片机';
+      const modelGroup = new THREE.Group();
+      modelGroup.position.set(0, 0, 0);
+      rangeGrid(2, 5, (hIndex, vIndex) => {
+        const modelClone = model.clone();
+        modelClone.position.set(-145 * hIndex, 0, -160 * vIndex);
+        modelGroup.add(modelClone);
+      });
+      group.add(modelGroup);
+    });
+
+    load('/public/mesh/检测AOR', (model) => {
+      model.scale.set(0.4, 0.4, 0.4);
+      model.rotateY(Math.PI * -0.5);
+      model.name = '检测AOR';
+      const modelGroup = new THREE.Group();
+      modelGroup.position.set(150, 0, 0);
+      rangeGrid(1, 5, (hIndex, vIndex) => {
+        const modelClone = model.clone();
+        modelClone.position.set(0, 0, -150 * vIndex);
+        modelGroup.add(modelClone);
+      });
+      group.add(modelGroup);
+    });
+
+    load('/public/mesh/炉子', (model) => {
+      model.scale.set(0.4, 0.4, 0.4);
+      model.rotateY(Math.PI * -0.5);
+      model.name = '炉子';
+      const modelGroup = new THREE.Group();
+      modelGroup.position.set(280, 0, 0);
+      rangeGrid(1, 5, (hIndex, vIndex) => {
+        const modelClone = model.clone();
+        modelClone.position.set(0, 0, -150 * vIndex);
+        modelGroup.add(modelClone);
+      });
+      group.add(modelGroup);
+    });
+
+    // this.initControls();
+  }
+
+  handleEvent(e) {
+    switch (e.type) {
+      case 'click':
+        this.handleClick(e);
+        break;
+      case 'resize':
+        this.resize(e);
+        break;
+    }
+  }
+
+  // 尺寸update
+  resize() {
+    const { scrollWidth, scrollHeight } = this.$el;
+    this.camera.aspect = scrollWidth / scrollHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(scrollWidth, scrollHeight);
+  }
+
+  handleClick(event) {
+    event.preventDefault();
+
+    // 声明 raycaster 和 mouse 变量
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    // 通过鼠标点击位置,计算出 raycaster 所需点的位置,以屏幕为中心点,范围 -1 到 1
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    // 通过鼠标点击的位置(二维坐标)和当前相机的矩阵计算出射线位置
+    raycaster.setFromCamera(mouse, this.camera);
+
+    // 获取与raycaster射线相交的数组集合，其中的元素按照距离排序，越近的越靠前
+    const intersects = raycaster.intersectObjects(this.scene.children);
+    if (intersects.length) {
+      this.emitClick && this.emitClick(intersects[0].object);
+    }
+  }
+
+  bindEvent() {}
+
+  // initControls() {
+  //   this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+  //   // 设置控制器的中心点
+  //   this.controls.target.set(0, 100, 0);
+  //   // 如果使用animate方法时，将此函数删除
+  //   // controls.addEventListener( 'change', render );
+  //   // 使动画循环使用时阻尼或自转 意思是否有惯性
+  //   this.controls.enableDamping = true;
+  //   // 动态阻尼系数 就是鼠标拖拽旋转灵敏度
+  //   // this.controls.dampingFactor = 0.25;
+  //   // 是否可以缩放
+  //   this.controls.enableZoom = true;
+  //   // 是否自动旋转
+  //   this.controls.autoRotate = false;
+  //   this.controls.autoRotateSpeed = 0.5;
+  //   // 设置相机距离原点的最远距离
+  //   this.controls.minDistance = 1;
+  //   // 设置相机距离原点的最远距离
+  //   this.controls.maxDistance = 2000;
+  //   // 是否开启右键拖拽
+  //   this.controls.enablePan = true;
+  // }
+
+  render() {
+    pos.y += 5;
+    this.camera.position.y = pos.y;
+    if (pos.y >= 550) {
+      window.cancelAnimationFrame(this.timer);
+    } else {
+      // 渲染到屏幕上面
+      this.renderer.render(this.scene, this.camera);
+      this.timer = window.requestAnimationFrame(this.render.bind(this));
+    }
+  }
+
+  destroy() {
+    window.cancelAnimationFrame(this.timer);
+    off(window, 'resize', this);
+    off(this.renderer.domElement, 'click', this);
+    this.timer = null;
+    this.scene = null;
+    this.camera = null;
+    this.renderer = null;
+  }
 }

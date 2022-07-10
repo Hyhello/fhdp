@@ -37,7 +37,7 @@
           z-index: -1;
         }
         &::after {
-          background: rgba(#000d17, 0.2);
+          background: rgba(#000d17, 0.8);
           filter: blur(10px);
           -webkit-filter: blur(10px);
           background-attachment: fixed;
