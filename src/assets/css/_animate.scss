@@ -4,68 +4,68 @@
 $transition-speed: 0.3s;
 
 // fade
-.ce-fade-enter-active,
-.ce-fade-leave-active,
-.ce-fade-in-enter-active,
-.ce-fade-in-leave-active,
-.ce-fadeInRight-enter-active,
-.ce-fadeInRight-leave-active,
-.ce-fadeInBottom-enter-active,
-.ce-fadeInBottom-leave-active,
-.ce-fadeInLeft-enter-active,
-.ce-fadeInLeft-leave-active,
-.ce-fadeInTop-enter-active,
-.ce-fadeInTop-leave-active {
+.hy-fade-enter-active,
+.hy-fade-leave-active,
+.hy-fade-in-enter-active,
+.hy-fade-in-leave-active,
+.hy-fadeInRight-enter-active,
+.hy-fadeInRight-leave-active,
+.hy-fadeInBottom-enter-active,
+.hy-fadeInBottom-leave-active,
+.hy-fadeInLeft-enter-active,
+.hy-fadeInLeft-leave-active,
+.hy-fadeInTop-enter-active,
+.hy-fadeInTop-leave-active {
 	transition: all $transition-speed;
 }
 
-.ce-fade-in-enter,
-.ce-fade-in-leave-to {
+.hy-fade-in-enter,
+.hy-fade-in-leave-to {
 	opacity: 0;
 }
 
-.ce-fade-enter,
-.ce-fade-leave-to {
+.hy-fade-enter,
+.hy-fade-leave-to {
 	opacity: 0;
 	transform: translate(-50%, -100%) !important;
 }
 
-.ce-fadeInRight-enter,
-.ce-fadeInRight-leave-to {
+.hy-fadeInRight-enter,
+.hy-fadeInRight-leave-to {
 	opacity: 0;
 	transform: translate(100%, 0);
 }
-.ce-fadeInBottom-enter,
-.ce-fadeInBottom-leave-to {
+.hy-fadeInBottom-enter,
+.hy-fadeInBottom-leave-to {
 	opacity: 0;
 	transform: translate(0, 100%);
 }
-.ce-fadeInLeft-enter,
-.ce-fadeInLeft-leave-to {
+.hy-fadeInLeft-enter,
+.hy-fadeInLeft-leave-to {
 	opacity: 0;
 	transform: translate(-100%, 0);
 }
-.ce-fadeInTop-enter,
-.ce-fadeInTop-leave-to {
+.hy-fadeInTop-enter,
+.hy-fadeInTop-leave-to {
 	opacity: 0;
 	transform: translate(0, -100%);
 }
 
-.ce-fadeOut-leave-to,
-.ce-fadeOut-leave-to {
+.hy-fadeOut-leave-to,
+.hy-fadeOut-leave-to {
 	opacity: 0;
 }
 
-.ce-zoom-enter-active,
-.ce-zoom-leave-active {
+.hy-zoom-enter-active,
+.hy-zoom-leave-active {
 	animation-duration: $transition-speed;
 	animation-fill-mode: both;
 }
 
-.ce-zoom-enter-active {
+.hy-zoom-enter-active {
 	animation-name: zoomIn;
 }
-.ce-zoom-leave-active {
+.hy-zoom-leave-active {
 	animation-name: zoomOut;
 }
 

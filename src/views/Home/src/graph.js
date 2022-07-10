@@ -219,7 +219,9 @@ export default class Graph {
     // 获取与raycaster射线相交的数组集合，其中的元素按照距离排序，越近的越靠前
     const intersects = raycaster.intersectObjects(this.scene.children);
     if (intersects.length) {
-      this.emitClick && this.emitClick(intersects[0].object);
+      this.emitClick && this.emitClick(intersects[0].object, { clientX: event.clientX, clientY: event.clientY });
+    } else {
+      this.emitClick && this.emitClick();
     }
   }
 
@@ -249,7 +251,7 @@ export default class Graph {
   // }
 
   render() {
-    pos.y += 5;
+    pos.y += 2;
     this.camera.position.y = pos.y;
     if (pos.y >= 550) {
       window.cancelAnimationFrame(this.timer);
