@@ -16,6 +16,8 @@ const pos = {
   z: 0
 };
 
+const PATH_PREFIX = process.env.NODE_ENV !== 'development' ? '' : '/public';
+
 // 加载模型
 const oLoader = new OBJLoader();
 const mLoader = new MTLLoader();
@@ -36,9 +38,9 @@ const rangeGrid = (m, n, cb) => {
 
 // 模型加载 (obj, mtl)
 const load = (path, cb) => {
-  mLoader.load(path + '.mtl', (materials) => {
+  mLoader.load(PATH_PREFIX + path + '.mtl', (materials) => {
     materials.preload();
-    oLoader.setMaterials(materials).load(path + '.obj', cb);
+    oLoader.setMaterials(materials).load(PATH_PREFIX + path + '.obj', cb);
   });
 };
 
@@ -124,7 +126,7 @@ export default class Graph {
     };
 
     // 加载模型
-    load('/public/mesh/切片机', (model) => {
+    load('/mesh/切片机', (model) => {
       model.scale.set(0.4, 0.4, 0.4);
       model.rotateY(Math.PI * -0.5);
       model.name = '切片机';
@@ -138,7 +140,7 @@ export default class Graph {
       group.add(modelGroup);
     });
 
-    load('/public/mesh/贴片机', (model) => {
+    load('/mesh/贴片机', (model) => {
       model.scale.set(0.4, 0.4, 0.4);
       model.rotateY(Math.PI * -0.5);
       model.name = '贴片机';
@@ -152,7 +154,7 @@ export default class Graph {
       group.add(modelGroup);
     });
 
-    load('/public/mesh/检测AOR', (model) => {
+    load('/mesh/检测AOR', (model) => {
       model.scale.set(0.4, 0.4, 0.4);
       model.rotateY(Math.PI * -0.5);
       model.name = '检测AOR';
@@ -166,7 +168,7 @@ export default class Graph {
       group.add(modelGroup);
     });
 
-    load('/public/mesh/炉子', (model) => {
+    load('/mesh/炉子', (model) => {
       model.scale.set(0.4, 0.4, 0.4);
       model.rotateY(Math.PI * -0.5);
       model.name = '炉子';
