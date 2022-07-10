@@ -118,7 +118,7 @@ export default class Graph {
     THREE.DefaultLoadingManager.onLoad = () => {
       rangeGrid(2, 1, (hIndex) => {
         const groupClone = group.clone();
-        groupClone.position.set(-1100 * hIndex, 0, 80);
+        groupClone.position.set(-1050 * hIndex, 0, 80);
         this.scene.add(groupClone);
       });
 
