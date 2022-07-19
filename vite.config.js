@@ -1,6 +1,8 @@
+// 使用Vue2版本
 import { defineConfig, loadEnv } from 'vite';
 import { createVuePlugin } from 'vite-plugin-vue2';
-const path = require('path'); // 使用Vue2版本
+import PostcssPxToViewport from 'postcss-px-to-viewport';
+const path = require('path');
 
 export default defineConfig(({ command, mode }) => {
   let config = {};
@@ -90,7 +92,20 @@ export default defineConfig(({ command, mode }) => {
                 }
               }
             }
-          }
+          },
+          new PostcssPxToViewport({
+            unitToConvert: 'px',
+            viewportWidth: 1920,
+            unitPrecision: 5,
+            propList: ['*'],
+            viewportUnit: 'vw',
+            fontViewportUnit: 'vw',
+            selectorBlackList: [],
+            minPixelValue: 1,
+            mediaQuery: false,
+            replace: true,
+            exclude: []
+          })
         ]
       },
       preprocessorOptions: {

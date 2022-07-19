@@ -12,11 +12,12 @@
         padding: 0 7px 7px;
         margin: 0 -7px -7px;
         background: url('../../../assets/images/unqualified_bg.png') no-repeat center 0;
-        background-size: 100% 100%;
+        background-size: 100%;
         @include flex(stretch, row nowrap);
         @include E(li) {
           flex: 1;
-          background: url('../../../assets/images/unqualified_pie_bg.png') no-repeat center -90px;
+          background: url('../../../assets/images/unqualified_pie_bg.png') no-repeat center -75px;
+          background-size: 100%;
           @include E(box) {
             @include flex(center, column nowrap);
             @include E(pie) {

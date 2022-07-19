@@ -244,7 +244,7 @@ export const unqualifiedFn = (value, text) => {
       z: 10
     },
     polar: {
-      radius: '100%' // 调半径
+      radius: '94%' // 调半径
     },
     series: [
       {
