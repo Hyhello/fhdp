@@ -49,48 +49,48 @@
 <template>
   <CardBox custom-bg title="订单详情">
     <div class="hy-line__statistics">
-      <div class="hy-line__statistics-header">20220119006_wrt</div>
+      <div class="hy-line__statistics-header">{{ info.ddh || '20220119006_wrt' }}</div>
       <div class="hy-line__statistics-body">
         <div class="hy-line__statistics-card">
           <img class="hy-line__statistics-img" src="../../../assets/images/icon-1.png" alt="icon-1" />
           <div class="hy-line__statistics-content">
             <div class="hy-line__statistics-title">名称规则</div>
-            <div class="hy-line__statistics-text">2201764R2201764</div>
+            <div class="hy-line__statistics-text">{{ info.mcgz || '2201764R2201764' }}</div>
           </div>
         </div>
         <div class="hy-line__statistics-card">
           <img class="hy-line__statistics-img" src="../../../assets/images/icon-2.png" alt="icon-1" />
           <div class="hy-line__statistics-content">
             <div class="hy-line__statistics-title">单元号</div>
-            <div class="hy-line__statistics-text">SMT10线</div>
+            <div class="hy-line__statistics-text">{{ info.dyh || 'SMT10线' }}</div>
           </div>
         </div>
         <div class="hy-line__statistics-card">
           <img class="hy-line__statistics-img" src="../../../assets/images/icon-3.png" alt="icon-1" />
           <div class="hy-line__statistics-content">
             <div class="hy-line__statistics-title">订单交期</div>
-            <div class="hy-line__statistics-text">2022.10.16</div>
+            <div class="hy-line__statistics-text">{{ info.ddjq || '2022.10.16' }}</div>
           </div>
         </div>
         <div class="hy-line__statistics-card">
           <img class="hy-line__statistics-img" src="../../../assets/images/icon-4.png" alt="icon-1" />
           <div class="hy-line__statistics-content">
             <div class="hy-line__statistics-title">计划数</div>
-            <div class="hy-line__statistics-text">99</div>
+            <div class="hy-line__statistics-text">{{ info.jhs || '999' }}</div>
           </div>
         </div>
         <div class="hy-line__statistics-card">
           <img class="hy-line__statistics-img" src="../../../assets/images/icon-5.png" alt="icon-1" />
           <div class="hy-line__statistics-content">
             <div class="hy-line__statistics-title">监控数</div>
-            <div class="hy-line__statistics-text">999</div>
+            <div class="hy-line__statistics-text">{{ info.jks || '99' }}</div>
           </div>
         </div>
         <div class="hy-line__statistics-card">
           <img class="hy-line__statistics-img" src="../../../assets/images/icon-6.png" alt="icon-1" />
           <div class="hy-line__statistics-content">
             <div class="hy-line__statistics-title">状态</div>
-            <div class="hy-line__statistics-text" style="color: #24deff">生产中</div>
+            <div class="hy-line__statistics-text" style="color: #24deff">{{ info.zt || '生产中' }}</div>
           </div>
         </div>
       </div>
@@ -101,6 +101,12 @@
   import CardBox from '@/components/CardBox.vue';
   export default {
     name: 'Statistics',
-    components: { CardBox }
+    components: { CardBox },
+    inject: ['Lines'],
+    computed: {
+      info() {
+        return this.Lines.info;
+      }
+    }
   };
 </script>

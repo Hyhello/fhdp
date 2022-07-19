@@ -114,6 +114,7 @@
       },
       // 输出结果
       handleOutput(res = []) {
+        console.log(res);
         this.$bus.$emit(`xlsx-result`, res);
       }
     }

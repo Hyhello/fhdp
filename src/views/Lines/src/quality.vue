@@ -115,6 +115,7 @@
     {
       name: '问题A',
       value: 60,
+      en: 'wtA',
       itemStyle: {
         color: '#3FA9F5'
       }
@@ -122,6 +123,7 @@
     {
       name: '问题C',
       value: 45,
+      en: 'wtA',
       itemStyle: {
         color: '#FFC21E'
       }
@@ -129,6 +131,7 @@
     {
       name: '问题B',
       value: 50,
+      en: 'wtB',
       itemStyle: {
         color: '#00FFFF'
       }
@@ -136,6 +139,7 @@
     {
       name: '其他',
       value: 40,
+      en: 'qt',
       itemStyle: {
         color: '#AED91C'
       }
@@ -147,11 +151,26 @@
   export default {
     name: 'Quality',
     components: { CardBox, ECharts },
+    inject: ['Lines'],
     data() {
       return {
         legendData: data,
         options: qualityFn(data)
       };
+    },
+    watch: {
+      info(val) {
+        this.legendData = this.legendData.map((item) => {
+          item.value = this.info[item.en];
+          return item;
+        });
+        this.options = qualityFn(this.legendData);
+      }
+    },
+    computed: {
+      info() {
+        return this.Lines.info;
+      }
     },
     methods: {
       calcStyle(row) {

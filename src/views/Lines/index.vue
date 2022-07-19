@@ -27,8 +27,32 @@
 </template>
 <script>
   import * as childs from './src';
+  import xlsx from '@/mixins/xlsx';
+  import { convert2Pinyin } from '@/utils/pinyin';
+
   export default {
     name: 'Lines',
-    components: { ...childs }
+    mixins: [xlsx],
+    components: { ...childs },
+    data() {
+      return {
+        info: {}
+      };
+    },
+    provide() {
+      return {
+        Lines: this
+      };
+    },
+    methods: {
+      formatData(list) {
+        this.info = {};
+        const data = list[0] || {};
+        for (const key in data) {
+          this.info[convert2Pinyin(key)] = data[key];
+        }
+        console.log(this.info);
+      }
+    }
   };
 </script>

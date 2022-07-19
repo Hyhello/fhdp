@@ -8,7 +8,7 @@ import * as THREE from 'three';
 import { rangeArr, on, off } from '@hyhello/utils';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
-// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 const pos = {
   x: 0,
@@ -89,7 +89,7 @@ export default class Graph {
     this.$el.appendChild(renderer.domElement);
 
     // 初始化灯光
-    this.scene.add(new THREE.AmbientLight(0x000f46));
+    this.scene.add(new THREE.AmbientLight(0xfffffff));
     const light = new THREE.DirectionalLight(0xffffff);
     light.position.set(0, 200, 100);
     light.castShadow = true;
@@ -229,28 +229,28 @@ export default class Graph {
 
   bindEvent() {}
 
-  // initControls() {
-  //   this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-  //   // 设置控制器的中心点
-  //   this.controls.target.set(0, 100, 0);
-  //   // 如果使用animate方法时，将此函数删除
-  //   // controls.addEventListener( 'change', render );
-  //   // 使动画循环使用时阻尼或自转 意思是否有惯性
-  //   this.controls.enableDamping = true;
-  //   // 动态阻尼系数 就是鼠标拖拽旋转灵敏度
-  //   // this.controls.dampingFactor = 0.25;
-  //   // 是否可以缩放
-  //   this.controls.enableZoom = true;
-  //   // 是否自动旋转
-  //   this.controls.autoRotate = false;
-  //   this.controls.autoRotateSpeed = 0.5;
-  //   // 设置相机距离原点的最远距离
-  //   this.controls.minDistance = 1;
-  //   // 设置相机距离原点的最远距离
-  //   this.controls.maxDistance = 2000;
-  //   // 是否开启右键拖拽
-  //   this.controls.enablePan = true;
-  // }
+  initControls() {
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    // 设置控制器的中心点
+    this.controls.target.set(0, 100, 0);
+    // 如果使用animate方法时，将此函数删除
+    // controls.addEventListener( 'change', render );
+    // 使动画循环使用时阻尼或自转 意思是否有惯性
+    this.controls.enableDamping = true;
+    // 动态阻尼系数 就是鼠标拖拽旋转灵敏度
+    // this.controls.dampingFactor = 0.25;
+    // 是否可以缩放
+    this.controls.enableZoom = true;
+    // 是否自动旋转
+    this.controls.autoRotate = false;
+    this.controls.autoRotateSpeed = 0.5;
+    // 设置相机距离原点的最远距离
+    this.controls.minDistance = 1;
+    // 设置相机距离原点的最远距离
+    this.controls.maxDistance = 2000;
+    // 是否开启右键拖拽
+    this.controls.enablePan = true;
+  }
 
   render() {
     pos.y += 2;

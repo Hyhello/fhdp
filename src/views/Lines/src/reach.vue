@@ -29,10 +29,21 @@
   export default {
     name: 'Reach',
     components: { CardBox, ECharts },
+    inject: ['Lines'],
     data() {
       return {
         options: reachFn()
       };
+    },
+    watch: {
+      info(val) {
+        this.options = reachFn(val);
+      }
+    },
+    computed: {
+      info() {
+        return this.Lines.info;
+      }
     }
   };
 </script>

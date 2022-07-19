@@ -48,7 +48,7 @@
           <div class="hy-line__pie">
             <ECharts type="pie" :options="options1"></ECharts>
           </div>
-          <div class="hy-line__title"><span>不合格数：</span>7</div>
+          <div class="hy-line__title"><span>不合格数：</span>{{ info.TRISPIN || 7 }}</div>
         </div>
       </div>
       <div class="hy-line__li">
@@ -56,7 +56,7 @@
           <div class="hy-line__pie">
             <ECharts type="pie" :options="options2"></ECharts>
           </div>
-          <div class="hy-line__title"><span>不合格数：</span>7</div>
+          <div class="hy-line__title"><span>不合格数：</span>{{ info.viscomAOIN || 7 }}</div>
         </div>
       </div>
       <div class="hy-line__li">
@@ -64,7 +64,7 @@
           <div class="hy-line__pie">
             <ECharts type="pie" :options="options3"></ECharts>
           </div>
-          <div class="hy-line__title"><span>不合格数：</span>7</div>
+          <div class="hy-line__title"><span>不合格数：</span>{{ info.TRIAOIN || 7 }}</div>
         </div>
       </div>
     </div>
@@ -77,12 +77,25 @@
   export default {
     name: 'Unqualified',
     components: { CardBox, ECharts },
+    inject: ['Lines'],
     data() {
       return {
         options1: unqualifiedFn(87, 'TRI SPI'),
         options2: unqualifiedFn(87, 'viscom AOI'),
         options3: unqualifiedFn(87, 'TRI AOI')
       };
+    },
+    watch: {
+      info(val) {
+        this.options1 = unqualifiedFn(val.TRISPIP, 'TRI SPI');
+        this.options2 = unqualifiedFn(val.viscomAOIP, 'viscom AOI');
+        this.options3 = unqualifiedFn(val.TRIAOIP, 'TRI AOI');
+      }
+    },
+    computed: {
+      info() {
+        return this.Lines.info;
+      }
     }
   };
 </script>

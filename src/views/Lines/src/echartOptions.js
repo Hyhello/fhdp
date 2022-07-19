@@ -6,7 +6,8 @@
 import { toFixed, random, rangeArr } from '@hyhello/utils';
 
 // 订单达成情况
-export const reachFn = () => {
+export const reachFn = (data = {}) => {
+  const { rq, dcl, wcs, jhs1 } = data;
   return {
     tooltip: {
       trigger: 'axis',
@@ -59,10 +60,12 @@ export const reachFn = () => {
     xAxis: [
       {
         type: 'category',
-        data: rangeArr(29).map((item, index) => {
-          if (index < 21) return '5.' + (10 + index + 1);
-          return '6.' + (index - 20);
-        }),
+        data: rq
+          ? rq.split(',')
+          : rangeArr(29).map((item, index) => {
+              if (index < 21) return '5.' + (10 + index + 1);
+              return '6.' + (index - 20);
+            }),
         axisTick: {
           show: false
         },
@@ -147,7 +150,7 @@ export const reachFn = () => {
             return val + '%';
           }
         },
-        data: rangeArr(29).map((item) => toFixed(random(80, 98)))
+        data: dcl ? dcl.split(',') : rangeArr(29).map((item) => toFixed(random(80, 98)))
       },
       {
         name: '完成数',
@@ -174,7 +177,7 @@ export const reachFn = () => {
           },
           borderRadius: [2, 2, 0, 0]
         },
-        data: rangeArr(29, 40)
+        data: wcs ? wcs.split(',') : rangeArr(29, 40)
       },
       {
         name: '计划数',
@@ -202,7 +205,7 @@ export const reachFn = () => {
           },
           borderRadius: [2, 2, 0, 0]
         },
-        data: rangeArr(29, 50)
+        data: jhs1 ? jhs1.split(',') : rangeArr(29, 50)
       }
     ]
   };
