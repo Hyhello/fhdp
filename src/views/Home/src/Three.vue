@@ -101,7 +101,7 @@
             }
           }
         });
-        this.graph.render();
+        this.graph.animate();
       });
     },
     beforeDestroy() {
