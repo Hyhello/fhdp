@@ -103,9 +103,9 @@ export default class Graph {
     this.scene.add(light);
 
     // 辅助工具
-    const helper = new THREE.AxesHelper(1000);
-    helper.position.set(0, 0, 0);
-    this.scene.add(helper);
+    // const helper = new THREE.AxesHelper(1000);
+    // helper.position.set(0, 0, 0);
+    // this.scene.add(helper);
 
     // 添加地板割线
     const grid = new THREE.GridHelper(10000, 200, 0x2460a5, 0x2460a5);
