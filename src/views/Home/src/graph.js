@@ -46,6 +46,8 @@ export default class Graph {
   constructor(el, options) {
     this.$el = el;
 
+    this.isAnimate = false;
+
     this.$dpr = window.devicePixelRatio || 1;
 
     // 渲染器动画
@@ -231,8 +233,6 @@ export default class Graph {
         TITLE_MAP[idx] = modelGroup;
       });
     });
-
-    this.initControls();
   }
 
   handleEvent(e) {
@@ -255,6 +255,7 @@ export default class Graph {
   }
 
   handleClick(event) {
+    if (this.isAnimate) return;
     event.preventDefault();
 
     // 声明 raycaster 和 mouse 变量
@@ -277,12 +278,10 @@ export default class Graph {
     }
   }
 
-  bindEvent() {}
-
   initControls() {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     // 设置控制器的中心点
-    this.controls.target.set(0, 100, 0);
+    this.controls.target.set(0, 0, 0);
     // 如果使用animate方法时，将此函数删除
     // this.controls.addEventListener('change', this.render.bind(this));
     // 使动画循环使用时阻尼或自转 意思是否有惯性
@@ -297,28 +296,32 @@ export default class Graph {
     // 设置相机距离原点的最远距离
     this.controls.minDistance = 1;
     // 设置相机距离原点的最远距离
-    this.controls.maxDistance = 2000;
+    this.controls.maxDistance = 10000;
     // 是否开启右键拖拽
     this.controls.enablePan = true;
   }
 
-  animate() {
+  render() {
     pos.y += 2;
+    this.isAnimate = true;
     this.camera.position.y = pos.y;
     this.camera.updateProjectionMatrix();
     if (pos.y >= 550) {
-      this.controls.update();
-      // window.cancelAnimationFrame(this.timer);
-      // this.initControls();
+      this.isAnimate = false;
+      window.cancelAnimationFrame(this.timer);
+      this.initControls();
+      this.animate();
     } else {
       // 渲染到屏幕上面
       this.renderer.render(this.scene, this.camera);
-      this.timer = window.requestAnimationFrame(this.animate.bind(this));
+      this.timer = window.requestAnimationFrame(this.render.bind(this));
     }
   }
 
-  render() {
+  animate() {
+    this.controls.update();
     this.renderer.render(this.scene, this.camera);
+    this.timer = window.requestAnimationFrame(this.animate.bind(this));
   }
 
   destroy() {
