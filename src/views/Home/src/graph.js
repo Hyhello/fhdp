@@ -126,7 +126,7 @@ export default class Graph {
         const titleGroup = TITLE_MAP[idx];
         titleGroup.position.set(280 + index * -145, 0, 0);
         groupClone.add(titleGroup);
-        groupClone.position.set(-950 * index + 3800, 0, 100);
+        groupClone.position.set(-950 * index + 2820, 0, 100);
         this.scene.add(groupClone);
       });
       this.renderer.render(this.scene, this.camera);
@@ -304,14 +304,13 @@ export default class Graph {
   render() {
     pos.y += 2;
     this.isAnimate = true;
-    this.camera.position.y = pos.y;
-    this.camera.updateProjectionMatrix();
     if (pos.y >= 500) {
       this.isAnimate = false;
-      window.cancelAnimationFrame(this.timer);
       this.initControls();
       this.animate();
+      window.cancelAnimationFrame(this.timer);
     } else {
+      this.camera.position.y = pos.y;
       // 渲染到屏幕上面
       this.renderer.render(this.scene, this.camera);
       this.timer = window.requestAnimationFrame(this.render.bind(this));
