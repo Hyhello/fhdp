@@ -74,7 +74,7 @@ export default class Graph {
 
     // 初始化相机
     this.camera = new THREE.PerspectiveCamera(45, scrollWidth / scrollHeight, 1, 10000);
-    this.camera.position.set(-300, 550, 600);
+    this.camera.position.set(-220, 500, 600);
     this.camera.up.x = 0;
     this.camera.up.y = 1;
     this.camera.up.z = 0;
@@ -126,7 +126,7 @@ export default class Graph {
         const titleGroup = TITLE_MAP[idx];
         titleGroup.position.set(280 + index * -145, 0, 0);
         groupClone.add(titleGroup);
-        groupClone.position.set(-950 * index, 0, 100);
+        groupClone.position.set(-950 * index + 3800, 0, 100);
         this.scene.add(groupClone);
       });
       this.renderer.render(this.scene, this.camera);
@@ -306,7 +306,7 @@ export default class Graph {
     this.isAnimate = true;
     this.camera.position.y = pos.y;
     this.camera.updateProjectionMatrix();
-    if (pos.y >= 550) {
+    if (pos.y >= 500) {
       this.isAnimate = false;
       window.cancelAnimationFrame(this.timer);
       this.initControls();
