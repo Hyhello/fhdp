@@ -55,6 +55,8 @@ export default class Graph {
 
     this.emitClick = options.handleClick;
 
+    this.emitDone = options.done;
+
     // 场景、相机、渲染器
     this.scene = null;
     this.camera = null;
@@ -309,6 +311,7 @@ export default class Graph {
       window.cancelAnimationFrame(this.timer);
       this.initControls();
       this.animate();
+      this.emitDone();
     } else {
       this.camera.position.y = pos.y;
       // 渲染到屏幕上面

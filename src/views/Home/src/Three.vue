@@ -99,6 +99,9 @@
               self.title = ev.parent.name;
               self.visible = true;
             }
+          },
+          done() {
+            self.$parent.animate = true;
           }
         });
         this.graph.render();
