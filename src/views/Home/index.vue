@@ -22,7 +22,7 @@
   }
   .fade-left-enter-active,
   .fade-left-leave-active {
-    transition: all 1.5s;
+    transition: all 1.2s;
   }
   .fade-left-enter,
   .fade-left-leave-to {
@@ -31,10 +31,10 @@
   }
   .fade-right-enter-active,
   .fade-right-leave-active {
-    transition: all 3.3s;
+    transition: all 2.7s;
     .inner-1,
     .inner-2 {
-      transition: all 1.5s;
+      transition: all 1.2s;
     }
     .inner-1 {
       transition-delay: 0s;
